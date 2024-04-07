@@ -6,8 +6,14 @@ const workoutRoutes=require('./routes/workoutRoutes')
 dotenv.config()
 const app=express();
 const port=8000
+app.use(cors())
 app.use(express.json())
 app.use('/api/workout',workoutRoutes)
-app.listen(process.env.PORT,()=>{
-    console.log("backend satrted",process.env.port)
-})
+mongoose.connect(process.env.MONGO_URI).then(()=>{
+    console.log("database is online")
+    app.listen(process.env.PORT,()=>{
+        console.log("backend satrted",process.env.port)
+    })
+}).catch((err)=>
+console.log("error is there",err))
+

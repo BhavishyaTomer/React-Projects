@@ -1,37 +1,15 @@
 const express=require('express')
 const router=express.Router()
+const Workout=require('../models/workoutSchemas')
+const { getWorkout, getAllWorkout, createWorkout ,deletePost,updatePost} = require('../controller/workoutController');
 
-router.get('/',(req,res)=>{
-    res.json({
-        msg:"hellp there"
-    })
-    console.log("get for multiple user")
-})
+router.get('/',getAllWorkout)
 
-router.get('/:id',(req,res)=>{
-    res.json({
-        msg:"hellp there"
-    })
-    console.log("get a single user")
-})
-router.post('/',(req,res)=>{
-    res.json({
-        msg:"hellp there"
-    })
-    console.log("posting for /")
-})
+router.get('/:id',getWorkout)
+router.post('/', createWorkout);
 
-router.delete('/:id',(req,res)=>{
-    res.json({
-        msg:"hellp there"
-    })
-    console.log("deleting for /")
-})
 
-router.patch('/:id',(req,res)=>{
-    res.json({
-        msg:"hellp there"
-    })
-    console.log("update for /")
-})
+router.delete('/:id',deletePost)
+
+router.patch('/:id',updatePost)
 module.exports=router
