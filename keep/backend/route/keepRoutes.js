@@ -7,4 +7,4 @@ router.post('/',createList)
 router.put('/:id',updateList)
 router.delete('/:id',deleteinList)
 
-module.exports=router
+module.exports=router;
