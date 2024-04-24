@@ -22,7 +22,9 @@ app.get('/',(req,res)=>{
 io.on("connection",(socket)=>{
     console.log("Connection established",socket.id)
     socket.on("message",(data)=>{
-        console.log("message is",data.message)   })
+        console.log("message is",data.message)
+    socket.to(data.room).emit("recive-message",data.message)
+    })
    socket.on("disconnect",()=>{
     console.log("disconnected",socket.id)
    })
