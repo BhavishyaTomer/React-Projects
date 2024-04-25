@@ -1,35 +1,49 @@
-import { createServer } from "http";
-import dotenv from "dotenv";
-import cors from "cors";
-import express from "express"; // corrected import statement
-import { Server } from "socket.io";
-dotenv.config();
+const http = require('http');
+const express = require('express');
+const socketio = require('socket.io');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const { emit } = require('process');
+dotenv.config()
 const app = express();
-app.use(cors());
-const server = createServer(app);
-const io=new Server(server,{
-    cors:{
-        origin:"http://localhost:5173",
-        methods:["GET","POST"],
-        credentials:true
-    }
-} )
-
-app.get('/',(req,res)=>{
-    console.log("hello world")
+const user = [];
+const server = http.createServer(app);        
+const io = socketio(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"],
+        credentials: true
+    }                 //1)ususally const server = createServer(app);
+});                  //2)ususally const io = socketio(server);
+                     //3)io.on("connection",(socket)=>{
+app.get("/", (req, res) => {
+    res.send("Hello from server");
+    console.log("Hello from server");
 })
+io.on("connection", (socket) => {
+    console.log("New connection");
+    console.log(socket.id);
 
-io.on("connection",(socket)=>{
-    console.log("Connection established",socket.id)
-    socket.on("message",(data)=>{
-        console.log("message is",data.message)
-    socket.to(data.room).emit("recive-message",data.message)
-    })
-   socket.on("disconnect",()=>{
-    console.log("disconnected",socket.id)
-   })
+    socket.on("join", (s) => {
+        console.log("user joined :", s)
+        user[socket.id] = s
+        console.log("triggered");
+        socket.broadcast.emit("userjoined", { user: "chotuadmin", message: `${user[socket.id]} has joined the chat` })
+        console.log("not triggered");
     })
 
+    socket.on("message", (message,id) => {
+        console.log("message is ", message)
+       io.emit("message", { user: user[socket.id], message: ` ${message}`,id:id })
+    })
+
+    socket.on("disconnect",()=>{
+        socket.broadcast.emit("leave",{user:"Admin",message:`${user[socket.id]} has left the chat`})
+        console.log("user left");
+    })
+
+    socket.emit("welcome", { user: "Admin", message: "Welcome to the chat" })
+})
 server.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+    console.log("Server is running on port ", process.env.PORT);
 });
