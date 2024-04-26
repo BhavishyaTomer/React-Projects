@@ -7,8 +7,13 @@ import './Chat.css';
 import { Link } from 'react-router-dom';
 import Message from '../message/Message';
 import ReactScrollToBottom from 'react-scroll-to-bottom';
+import { useNavigate } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import { firebaseauth } from '../../firebase-config';
+
 let socket;
 const Chat = () => {
+    const Navigate=useNavigate()
     const { username } = useContext(UserContext);
     const [message, setMessage] = useState('')
     const [msg, setMsg] = useState([])
@@ -57,6 +62,15 @@ const Chat = () => {
             socket.off();
         }
     }, [msg])
+    const handleSingOut=async()=>{
+try {
+    await signOut(firebaseauth);
+    Navigate('/login')
+} catch (error) {
+    console.log(error)
+}
+    
+    }
     return (
         
         <>
@@ -66,7 +80,7 @@ const Chat = () => {
                     <div className="header d-flex justify-content-between">
                         <img src={logo} alt="" className='img my-auto'/>
                         <Link to="/">
-                        <i className="fa-solid fa-xmark m-4"></i>
+                        <i className="fa-solid fa-xmark m-4" onClick={handleSingOut}></i>
                         </Link>
                     </div>
                     <ReactScrollToBottom className="chatArea">
