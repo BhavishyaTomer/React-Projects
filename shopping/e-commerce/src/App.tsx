@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { lazy } from 'react'
 import { Suspense } from 'react'
+import Header from './components/Header'
 import Loader from './components/Loader'
 function App() {
   const [count, setCount] = useState(0)
@@ -31,6 +32,7 @@ function App() {
     
         <BrowserRouter>
         <Suspense fallback={<Loader />}>
+          <Header/>
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/about' element={<Search />} />
