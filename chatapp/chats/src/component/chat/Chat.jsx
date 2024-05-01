@@ -25,7 +25,7 @@ const Chat = () => {
     }
     
     useEffect(() => {
-        socket = io('https://chatapp-i3sl.onrender.com');
+        socket = io('https://chatapp-01-8ggn.onrender.com');
         socket.on('connect', () => {
             setId(socket.id)
         });
