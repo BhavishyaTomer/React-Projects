@@ -1,0 +1,34 @@
+.header{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+    border: 1px solid black;
+}
+.header>div>img{
+    width: 100px;
+}
+.header>.tabs{
+    display: flex;
+   list-style: none;
+
+}
+.header>.tabs>li{
+    padding: 10px;
+    margin:10px
+}
+.restcards{
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    margin: 50px;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    }
+.restcards>img{
+    width: 100%;
+}
+.rest-cards{
+    display: flex;
+    flex-wrap: wrap;
+}
